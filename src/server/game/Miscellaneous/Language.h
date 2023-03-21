@@ -956,8 +956,27 @@ enum TrinityStrings
     LANG_LIST_MAIL_INFO_3               = 1154,
     LANG_LIST_MAIL_INFO_ITEM            = 1155,
     LANG_LIST_MAIL_NOT_FOUND            = 1156,
-
-    // Room for more level 3              1157-1184 not used
+    LANG_AHBOT_RELOAD_OK                = 1157,
+    LANG_AHBOT_STATUS_BAR_CONSOLE       = 1158,
+    LANG_AHBOT_STATUS_MIDBAR_CONSOLE    = 1159,
+    LANG_AHBOT_STATUS_TITLE1_CONSOLE    = 1160,
+    LANG_AHBOT_STATUS_TITLE1_CHAT       = 1161,
+    LANG_AHBOT_STATUS_FORMAT_CONSOLE    = 1162,
+    LANG_AHBOT_STATUS_FORMAT_CHAT       = 1163,
+    LANG_AHBOT_STATUS_ITEM_COUNT        = 1164,
+    LANG_AHBOT_STATUS_ITEM_RATIO        = 1165,
+    LANG_AHBOT_STATUS_TITLE2_CONSOLE    = 1166,
+    LANG_AHBOT_STATUS_TITLE2_CHAT       = 1167,
+    LANG_AHBOT_QUALITY_GRAY             = 1168,
+    LANG_AHBOT_QUALITY_WHITE            = 1169,
+    LANG_AHBOT_QUALITY_GREEN            = 1170,
+    LANG_AHBOT_QUALITY_BLUE             = 1171,
+    LANG_AHBOT_QUALITY_PURPLE           = 1172,
+    LANG_AHBOT_QUALITY_ORANGE           = 1173,
+    LANG_AHBOT_QUALITY_YELLOW           = 1174,
+    LANG_AHBOT_ITEMS_AMOUNT             = 1175,
+    LANG_AHBOT_ITEMS_RATIO              = 1176,
+    // Room for more level 3              1177-1184 not used
 
     LANG_ACCOUNT_BNET_LINKED            = 1185,
     LANG_ACCOUNT_OR_BNET_DOES_NOT_EXIST = 1186,
@@ -1529,11 +1548,43 @@ enum TrinityStrings
     LANG_BG_REWARD_TITLE_RICH               = 12529,
     LANG_BG_REWARD_BODY                     = 12530,
 
-    // Word filter
-    LANG_WORD_FILTER_FOUND_BAD_WORD_IN_CHAT = 21000,
-    LANG_WORD_FILTER_FOUND_BAD_WORD_IN_MAIL = 21001,
+    // Battle Pay
+    LANG_BATTLE_PAY_SEND_POINTS_BALANCE               = 15005,
+    LANG_BATTLE_PAY_UPDATE_POINTS_BALANCE             = 15006,
+    LANG_BATTLE_PAY_HAS_POINTS_BALANCE                = 15007,
 
-    // `db_script_string` table index     2000000000-2000009999 (MIN_DB_SCRIPT_STRING_ID-MAX_DB_SCRIPT_STRING_ID)
-    // For other tables maybe             2000010000-2147483647 (max index)
+    // Custom Transmogrification
+    // LANG_ERR_TRANSMOG_OK                              = 15008, Находится в CustomTransmogrification.h
+    // LANG_ERR_TRANSMOG_INVALID_SLOT                    = 15009, Находится в CustomTransmogrification.h
+    // LANG_ERR_TRANSMOG_INVALID_SRC_ENTRY               = 15010, Находится в CustomTransmogrification.h
+    // LANG_ERR_TRANSMOG_MISSING_SRC_ITEM                = 15011, Находится в CustomTransmogrification.h
+    // LANG_ERR_TRANSMOG_MISSING_DEST_ITEM               = 15012, Находится в CustomTransmogrification.h
+    // LANG_ERR_TRANSMOG_INVALID_ITEMS                   = 15013, Находится в CustomTransmogrification.h
+    // LANG_ERR_TRANSMOG_NOT_ENOUGH_MONEY                = 15014, Находится в CustomTransmogrification.h
+    // LANG_ERR_TRANSMOG_NOT_ENOUGH_TOKENS               = 15015, Находится в CustomTransmogrification.h
+    // LANG_ERR_UNTRANSMOG_OK                            = 15016, Находится в CustomTransmogrification.h
+    // LANG_ERR_UNTRANSMOG_NO_TRANSMOGS                  = 15017, Находится в CustomTransmogrification.h
+    // LANG_PRESET_ERR_INVALID_NAME                      = 15018, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_HEAD            = 15019, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_SHOULDERS       = 15020, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_BODY            = 15021, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_CHEST           = 15022, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_WAIST           = 15023, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_LEGS            = 15024, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_FEET            = 15025, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_WRISTS          = 15026, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_HANDS           = 15027, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_BACK            = 15028, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_MAINHAND        = 15029, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_OFFHAND         = 15030, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_RANGED          = 15031, Находится в CustomTransmogrification.h
+    // LANG_TRANSMOGRIFICATION_SLOT_NAME_TABARD          = 15032, Находится в CustomTransmogrification.h
+
+    LANG_ACCOUNT                                      = 15033,
+
+    // Word Filter
+    LANG_WORD_FILTER_FOUND_BAD_WORD_IN_CHAT           = 21000,
+    LANG_WORD_FILTER_FOUND_BAD_WORD_IN_MAIL           = 21001
 };
+
 #endif

@@ -20,6 +20,7 @@
 #include "ScriptedEscortAI.h"
 #include "PassiveAI.h"
 #include "Vehicle.h"
+#include "GameObjectAI.h"
 #include "TaskScheduler.h"
 
 enum Gilneas
@@ -118,6 +119,24 @@ enum Gilneas
 
     SPELL_GUARD_SHOOT                       = 48424,
 
+    EVENT_SEARCH_INVADER                    = 1,
+    EVENT_SEARCH_FOOTSOLDIER                = 2,
+    EVENT_SEARCH_WATCHMAN                   = 3,
+
+    NPC_ENTRY_INVADER                       = 34511,
+    NPC_ENTRY_FOOTSOLDIER                   = 36236,
+    NPC_ENTRY_WATCHMAN                      = 36211,
+
+    EVENT_LAUNCH_BOULDER                    = 1,
+    EVENT_DESPAWN_CATAPULT                  = 2,
+    EVENT_CHECK_PASSENGER                   = 3,
+
+    SPELL_LAUNCH_BOULDER                    = 68591,
+
+    QUEST_ENTRY_TWO_BY_SEA                  = 14382,
+
+    NPC_CATAPULT_BOULDER_TRIGGER            = 36286,
+
     SPELL_SAVE_CYNTHIA                      = 68597,
     SPELL_SAVE_ASHLEY                       = 68598,
     SPELL_SAVE_JAMES                        = 68596,
@@ -181,7 +200,14 @@ enum Gilneas
     ACTION_START_WP                         = 1,
 
     GO_FIRST_GATE                           = 196401,
-    GO_KINGS_GATE                           = 196412
+    GO_KINGS_GATE                           = 196412,
+
+    NPC_KOROTH_THE_HILLBREAKER              = 36294,
+
+    ACTION_START_KOROTH_EVENT               = 1,
+
+    SAY_KOROTH_THE_HILLBREAKER_1            = 0,
+    SAY_KOROTH_THE_HILLBREAKER_2            = 1
 };
 
 Position const runt2SummonJumpPos = { -1671.915f, 1446.734f, 52.28712f };
@@ -509,6 +535,15 @@ Position const childrenBasementPath[][childrenBasementPathLenght] =
         { -1879.062378f, 2546.958984f, -0.130342f, 0.0f },
         { -1873.854980f, 2550.903564f, -5.898719f, 0.0f },
         { -1868.589844f, 2536.521240f, -6.365717f, 0.0f },
+    },
+};
+
+uint8 const KorothPathLenght = 2;
+Position const KorothPath[][KorothPathLenght] =
+{
+    {
+        { -2271.431f, 1963.941f, 99.342613f, 0.0f },
+        { -2284.237f, 1963.801f, 95.656654f, 0.0f },
     },
 };
 
@@ -1082,7 +1117,7 @@ class spell_gilneas_pull_to : public SpellScript
 class npc_lorna_crowley_basement : public CreatureScript
 {
 public:
-    npc_lorna_crowley_basement(const char *ScriptName) : CreatureScript(ScriptName) { }
+    npc_lorna_crowley_basement(const char* ScriptName) : CreatureScript(ScriptName) { }
 
     bool OnQuestAccept(Player* player, Creature* creature, Quest const* quest)
     {
@@ -1549,6 +1584,294 @@ struct npc_saved_aranas : public ScriptedAI
     }
 };
 
+struct npc_duskhaven_watchman : public ScriptedAI
+{
+    npc_duskhaven_watchman(Creature* creature) : ScriptedAI(creature)
+    {
+        events.ScheduleEvent(EVENT_SEARCH_INVADER, 2s);
+    }
+
+    EventMap events;
+
+    void DamageTaken(Unit* who, uint32& damage)
+    {
+        if (who && who->ToCreature() && (who->GetEntry() == NPC_ENTRY_INVADER || who->GetEntry() == NPC_ENTRY_FOOTSOLDIER))
+            damage = 0;
+    }
+
+    void UpdateAI(uint32 diff)
+    {
+        events.Update(diff);
+
+        while (uint32 eventId = events.ExecuteEvent())
+        {
+            switch(eventId)
+            {
+                case EVENT_SEARCH_INVADER:
+                {
+                    if (!me->IsInCombat())
+                    {
+                        if (Creature* invader = me->FindNearestCreature(NPC_ENTRY_INVADER, 15.5f, true))
+                            AttackStart(invader);
+                    }
+                    else
+                        events.RescheduleEvent(EVENT_SEARCH_INVADER, randtime(2s, 5s));
+                    break;
+                }
+                case EVENT_SEARCH_FOOTSOLDIER:
+                {
+                    if (!me->IsInCombat())
+                    {
+                        if (Creature* footsoldier = me->FindNearestCreature(NPC_ENTRY_FOOTSOLDIER, 15.5f, true))
+                            AttackStart(footsoldier);
+                    }
+                    else
+                        events.RescheduleEvent(EVENT_SEARCH_FOOTSOLDIER, randtime(2s, 5s));
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+
+        if (!UpdateVictim())
+            return;
+
+        DoMeleeAttackIfReady();
+    }
+};
+
+struct npc_forsaken_invader : public ScriptedAI
+{
+    npc_forsaken_invader(Creature* creature) : ScriptedAI(creature)
+    {
+        events.ScheduleEvent(EVENT_SEARCH_WATCHMAN, 2s);
+    }
+
+    EventMap events;
+
+    void DamageTaken(Unit* who, uint32& damage)
+    {
+        if (who->ToCreature() && who->GetEntry() == NPC_ENTRY_WATCHMAN)
+            damage = 0;
+    }
+
+    void UpdateAI(uint32 diff)
+    {
+        events.Update(diff);
+
+        while (uint32 eventId = events.ExecuteEvent())
+        {
+            switch(eventId)
+            {
+                case EVENT_SEARCH_WATCHMAN:
+                {
+                    if (!me->IsInCombat())
+                    {
+                        if (Creature* watchman = me->FindNearestCreature(NPC_ENTRY_WATCHMAN, 15.5f, true))
+                            AttackStart(watchman);
+                    }
+                    else
+                        events.RescheduleEvent(EVENT_SEARCH_WATCHMAN, randtime(2s, 5s));
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+
+        if (!UpdateVictim())
+            return;
+
+        DoMeleeAttackIfReady();
+    }
+};
+
+struct npc_forsaken_footsoldier : public ScriptedAI
+{
+    npc_forsaken_footsoldier(Creature* creature) : ScriptedAI(creature)
+    {
+        events.ScheduleEvent(EVENT_SEARCH_WATCHMAN, 2s);
+    }
+
+    EventMap events;
+
+    void DamageTaken(Unit* who, uint32& damage)
+    {
+        if (who && who->ToCreature() && who->GetEntry() == NPC_ENTRY_WATCHMAN)
+            damage = 0;
+    }
+
+    void UpdateAI(uint32 diff)
+    {
+        events.Update(diff);
+
+        while (uint32 eventId = events.ExecuteEvent())
+        {
+            switch(eventId)
+            {
+                case EVENT_SEARCH_WATCHMAN:
+                {
+                    if (!me->IsInCombat())
+                    {
+                        if (Creature* watchman = me->FindNearestCreature(NPC_ENTRY_WATCHMAN, 15.5f, true))
+                            AttackStart(watchman);
+                    }
+                    else
+                        events.RescheduleEvent(EVENT_SEARCH_WATCHMAN, randtime(2s, 5s));
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+
+        if (!UpdateVictim())
+            return;
+
+        DoMeleeAttackIfReady();
+    }
+};
+
+class npc_forsaken_catapult : public CreatureScript
+{
+public:
+    npc_forsaken_catapult() : CreatureScript("npc_forsaken_catapult") { }
+
+    bool OnGossipHello(Player* player, Creature* creature)
+    {
+        if (player->GetQuestStatus(QUEST_ENTRY_TWO_BY_SEA) == QUEST_STATUS_INCOMPLETE)
+        {
+            if (player->GetVehicleBase())
+                return true;
+
+            player->EnterVehicle(creature, 0);
+            return true;
+        }
+        return true;
+    }
+
+    struct npc_forsaken_catapultAI : public ScriptedAI
+    {
+        npc_forsaken_catapultAI(Creature* creature) : ScriptedAI(creature)
+        {
+            events.ScheduleEvent(EVENT_LAUNCH_BOULDER, randtime(8s, 20s));
+            events.ScheduleEvent(EVENT_CHECK_PASSENGER, 5s);
+        }
+
+        EventMap events;
+
+        void OnCharmed(bool apply) { }
+
+        void Reset()
+        {
+            events.ScheduleEvent(EVENT_LAUNCH_BOULDER, randtime(8s, 20s));
+            events.ScheduleEvent(EVENT_CHECK_PASSENGER, 5s);
+            me->RemoveFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+            me->setFaction(1735);
+            me->SetReactState(REACT_PASSIVE);
+        }
+
+        void UpdateAI(uint32 diff)
+        {
+            events.Update(diff);
+
+            while (uint32 eventId = events.ExecuteEvent())
+            {
+                switch(eventId)
+                {
+                    case EVENT_LAUNCH_BOULDER:
+                    {
+                        if (Unit* passenger = me->GetVehicleKit()->GetPassenger(0))
+                        {
+                            if (passenger->GetTypeId() != TYPEID_PLAYER)
+                            {
+                                if (!me->HasUnitState(UNIT_STATE_CASTING))
+                                {
+                                    DoCast(SPELL_LAUNCH_BOULDER);
+                                    events.RescheduleEvent(EVENT_LAUNCH_BOULDER, randtime(5s, 12s));
+                                }
+                                else
+                                    events.RescheduleEvent(EVENT_LAUNCH_BOULDER, 1s);
+                            }
+                        }
+                        else
+                        {
+                            events.CancelEvent(EVENT_LAUNCH_BOULDER);
+                            events.ScheduleEvent(EVENT_DESPAWN_CATAPULT, 10s);
+                        }
+                        break;
+                    }
+                    case EVENT_DESPAWN_CATAPULT:
+                    {
+                        Unit* passenger1 = me->GetVehicleKit()->GetPassenger(0);
+                        Unit* passenger2 = me->GetVehicleKit()->GetPassenger(1);
+                        
+                        if (!passenger1 && !passenger2)
+                            me->DisappearAndDie();
+                        else
+                            events.RescheduleEvent(EVENT_DESPAWN_CATAPULT, 2s);
+                        break;
+                    }
+                    case EVENT_CHECK_PASSENGER:
+                    {
+                        Unit* passenger1 = me->GetVehicleKit()->GetPassenger(0);
+                        Unit* passenger2 = me->GetVehicleKit()->GetPassenger(1);
+                        
+                        if (!passenger1 && !passenger2)
+                        {
+                            me->SetFlag(UNIT_FIELD_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                            me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+                            me->setFaction(35);
+                            events.CancelEvent(EVENT_CHECK_PASSENGER);
+                        }
+                        else
+                            events.RescheduleEvent(EVENT_CHECK_PASSENGER, 2s + 500ms);
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
+        }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const
+    {
+        return new npc_forsaken_catapultAI (creature);
+    }
+};
+
+class BoulderTargetCheck
+{
+public:
+    BoulderTargetCheck() { }
+
+    bool operator()(WorldObject* object)
+    {
+        return (object->ToPlayer() || (object->ToUnit() && (object->ToUnit()->GetEntry() != NPC_CATAPULT_BOULDER_TRIGGER || object->GetPositionZ() > 3.48f)));
+    }
+};
+
+class spell_catapult_boulder : public SpellScript
+{
+    PrepareSpellScript(spell_catapult_boulder);
+
+    void FilterTargets(std::list<WorldObject*>& targets)
+    {
+        if (targets.empty())
+            return;
+
+        targets.remove_if(BoulderTargetCheck());
+    }
+
+    void Register() override
+    {
+        OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_catapult_boulder::FilterTargets, EFFECT_0, TARGET_UNIT_SRC_AREA_ENTRY);
+    }
+};
+
 class npc_gilneas_children : public CreatureScript
 {
     public:
@@ -1669,7 +1992,7 @@ class npc_gilneas_children : public CreatureScript
 class npc_wahl : public CreatureScript
 {
 public:
-    npc_wahl(const char *ScriptName) : CreatureScript(ScriptName) { }
+    npc_wahl(const char* ScriptName) : CreatureScript(ScriptName) { }
 
     struct npc_wahlAI : public npc_escortAI
     {
@@ -1726,7 +2049,7 @@ public:
 class npc_lucius_the_cruel : public CreatureScript
 {
 public:
-    npc_lucius_the_cruel(const char *ScriptName) : CreatureScript(ScriptName) { }
+    npc_lucius_the_cruel(const char* ScriptName) : CreatureScript(ScriptName) { }
 
     struct npc_lucius_the_cruelAI : public ScriptedAI
     {
@@ -1913,7 +2236,7 @@ struct npc_chance_the_cat : public ScriptedAI
 class npc_mountain_horse : public CreatureScript
 {
 public:
-    npc_mountain_horse(const char *ScriptName) : CreatureScript(ScriptName) { }
+    npc_mountain_horse(const char* ScriptName) : CreatureScript(ScriptName) { }
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
@@ -2061,7 +2384,7 @@ class spell_gilneas_test_telescope : public SpellScript
 class npc_stagecoach_carriage_exodus : public CreatureScript
 {
 public:
-    npc_stagecoach_carriage_exodus(const char *ScriptName) : CreatureScript(ScriptName) { }
+    npc_stagecoach_carriage_exodus(const char* ScriptName) : CreatureScript(ScriptName) { }
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
@@ -2129,7 +2452,7 @@ public:
 class npc_stagecoach_harness : public CreatureScript
 {
 public:
-    npc_stagecoach_harness(const char *ScriptName) : CreatureScript(ScriptName) { }
+    npc_stagecoach_harness(const char* ScriptName) : CreatureScript(ScriptName) { }
 
     struct npc_stagecoach_harnessAI : public npc_escortAI
     {
@@ -2207,6 +2530,66 @@ public:
     }
 };
 
+struct npc_koroth_the_hillbreaker : public ScriptedAI
+{
+    npc_koroth_the_hillbreaker(Creature* creature) : ScriptedAI(creature) { }
+
+    void DoAction(int32 const action) override
+    {
+        switch (action)
+        {
+            case ACTION_START_KOROTH_EVENT:
+                Talk(SAY_KOROTH_THE_HILLBREAKER_1);
+                me->GetMotionMaster()->MoveSplinePath(KorothPath[0], KorothPathLenght, false, true, 0.f, false, false);
+                TalkWithDelay(me->GetSplineDuration(), SAY_KOROTH_THE_HILLBREAKER_2);
+
+                me->m_Events.AddLambdaEventAtOffset([this]()
+                {
+                    me->GetMotionMaster()->MoveTargetedHome();
+                }, me->GetSplineDuration() + 3500);
+                break;
+        }
+    }
+
+    void UpdateAI(uint32 const diff) override
+    {
+        if (!UpdateVictim())
+            return;
+
+        DoMeleeAttackIfReady();
+    }
+};
+
+class go_koroth_banner : public GameObjectScript
+{
+public:
+    go_koroth_banner(const char* ScriptName) : GameObjectScript(ScriptName) { }
+
+    struct go_koroth_bannerAI : public GameObjectAI
+    {
+        go_koroth_bannerAI(GameObject* go) : GameObjectAI(go) { }
+
+        void OnStateChanged(uint32 state, Unit* /*unit*/) override
+        {
+            if (state != GO_JUST_DEACTIVATED)
+                return;
+
+            if (Creature* koroth = go->FindNearestCreature(NPC_KOROTH_THE_HILLBREAKER, 30.0f))
+            {
+                if (koroth->IsAIEnabled)
+                {
+                    koroth->GetAI()->DoAction(ACTION_START_KOROTH_EVENT);
+                }
+            }
+        }
+    };
+
+    GameObjectAI* GetAI(GameObject* go) const override
+    {
+        return new go_koroth_bannerAI(go);
+    }
+};
+
 void AddSC_gilneas()
 {
     new creature_script<npc_gilneas_crow>("npc_gilneas_crow");
@@ -2224,6 +2607,11 @@ void AddSC_gilneas()
     new npc_king_genn_greymane();
     new npc_vehicle_genn_horse();
     new creature_script<npc_saved_aranas>("npc_saved_aranas");
+    new creature_script<npc_duskhaven_watchman>("npc_duskhaven_watchman");
+    new creature_script<npc_forsaken_invader>("npc_forsaken_invader");
+    new creature_script<npc_forsaken_footsoldier>("npc_forsaken_footsoldier");
+    new npc_forsaken_catapult();
+    new spell_script<spell_catapult_boulder>("spell_catapult_boulder");
     new npc_gilneas_children("npc_james", SPELL_SAVE_JAMES, PLAYER_SAY_JAMES);
     new npc_gilneas_children("npc_ashley", SPELL_SAVE_ASHLEY, PLAYER_SAY_ASHLEY);
     new npc_gilneas_children("npc_cynthia", SPELL_SAVE_CYNTHIA, PLAYER_SAY_CYNTHIA);
@@ -2235,4 +2623,6 @@ void AddSC_gilneas()
     new spell_script<spell_gilneas_test_telescope>("spell_gilneas_test_telescope");
     new npc_stagecoach_carriage_exodus("npc_stagecoach_carriage_exodus");
     new npc_stagecoach_harness("npc_stagecoach_harness");
+    new creature_script<npc_koroth_the_hillbreaker>("npc_koroth_the_hillbreaker");
+    new go_koroth_banner("go_koroth_banner");
 }

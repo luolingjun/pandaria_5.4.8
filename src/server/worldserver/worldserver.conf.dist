@@ -27,6 +27,9 @@
 #    CONSOLE AND REMOTE ACCESS
 #    CHARACTER DELETE OPTIONS
 #    CUSTOM SERVER OPTIONS
+#    AUCTION HOUSE BOT SETTINGS
+#    AUCTION HOUSE BOT ITEM FINE TUNING
+#    AUCTION HOUSE BOT BUYER CONFIG
 #    LOGGING SYSTEM SETTINGS
 #    CURRENCIES SETTINGS
 #    BATTLE PET SETTINGS
@@ -92,13 +95,10 @@ LogsDir = "Logs"
 #        Default:     "127.0.0.1;3306;skyfire;skyfire;auth"       - (LoginDatabaseInfo)
 #                     "127.0.0.1;3306;skyfire;skyfire;world"      - (WorldDatabaseInfo)
 #                     "127.0.0.1;3306;skyfire;skyfire;characters" - (CharacterDatabaseInfo)
-#                     "127.0.0.1;3306;skyfire;skyfire;FusionCMS"  - (FusionCMSDatabaseInfo)
 
 LoginDatabaseInfo     = "127.0.0.1;3306;root;root;auth"
 WorldDatabaseInfo     = "127.0.0.1;3306;root;root;world"
 CharacterDatabaseInfo = "127.0.0.1;3306;root;root;characters"
-ArchiveDatabaseInfo   = "127.0.0.1;3306;root;root;archive"
-FusionCMSDatabaseInfo = "127.0.0.1;3306;root;root;fusion"
 
 #
 #    LoginDatabase.WorkerThreads
@@ -110,13 +110,10 @@ FusionCMSDatabaseInfo = "127.0.0.1;3306;root;root;fusion"
 #        Default:     1 - (LoginDatabase.WorkerThreads)
 #                     1 - (WorldDatabase.WorkerThreads)
 #                     1 - (CharacterDatabase.WorkerThreads)
-#                     1 - (FusionCMSDatabase.WorkerThreads)
 
 LoginDatabase.WorkerThreads     = 1
 WorldDatabase.WorkerThreads     = 1
 CharacterDatabase.WorkerThreads = 1
-ArchiveDatabase.WorkerThreads   = 1
-FusionCMSDatabase.WorkerThreads = 1
 
 #
 #    LoginDatabase.SynchThreads
@@ -126,13 +123,10 @@ FusionCMSDatabase.WorkerThreads = 1
 #        Default:     1 - (LoginDatabase.WorkerThreads)
 #                     1 - (WorldDatabase.WorkerThreads)
 #                     2 - (CharacterDatabase.WorkerThreads)
-#                     1 - (FusionCMSDatabase.WorkerThreads)
 
 LoginDatabase.SynchThreads     = 1
 WorldDatabase.SynchThreads     = 1
 CharacterDatabase.SynchThreads = 2
-ArchiveDatabase.SynchThreads   = 1
-FusionCMSDatabase.SynchThreads = 1
 
 #
 #    MaxPingTime
@@ -2684,13 +2678,6 @@ Calculate.Creature.Zone.Area.Data = 0
 
 Calculate.Gameoject.Zone.Area.Data = 0
 
-#    Wow.Token
-#        Description: Enable or disable the wow token
-#        Default:     0 - (Disabled)
-#                     1 - (Enabled)
-
-Wow.Token = 1
-
 #    AUTOMATIC EQUIPMENT LEVEL SCALE LEVEL 90
 #
 #    Ilvl.Scaling.PvE.Enable
@@ -2714,21 +2701,47 @@ Ilvl.Scaling.PvE = 463
 Ilvl.Scaling.PvP.Enable = true
 Ilvl.Scaling.PvP = 463
 
-#    PlayedTimeReward.Enabled
+#    Played.Time.Reward.Enabled
 #        Description: Enable or disable bonus for time played
+#        Default:   1 - (Enabled)
+#                   0 - (Disabled)
+
+Played.Time.Reward.Enabled = 1
+
+#    Played.Time.Reward.Item.Enabled
+#        Description: Enable or disable giving item for time played. If this option is disabled, are giving virtual points
 #        Default:   0 - (Disabled)
 #                   1 - (Enabled)
 
-PlayedTimeReward.Enabled = 1
+Played.Time.Reward.Item.Enabled = 0
 
-#    PlayedTimeReward.Interval
+#    Played.Time.Reward.Interval
 #        Description: Interval of bonus for time played
-#        Default:    1200 - (20 minutes)
+#        Default:     1200 - (20 minutes)
 #
-#        PlayedTimeReward.vp = 1 --> 1 voting point
 
-PlayedTimeReward.Interval = 1200
-PlayedTimeReward.vp = 1
+Played.Time.Reward.Interval = 1200
+
+#    Played.Time.Reward.Item.ID
+#        Description: ID of items a character will receive
+#        Default:     49426 - (Emblem of Frost)
+#
+
+Played.Time.Reward.Item.ID = 49426
+
+#    Played.Time.Reward.Item.Count
+#        Description: Number of items a character will receive
+#        Default:     1
+#
+
+Played.Time.Reward.Item.Count = 1
+
+#    Played.Time.Reward.VP.Count
+#        Description: Number of virtual points a character will receive
+#        Default:     1 - (1 virtual point)
+#
+
+Played.Time.Reward.VP.Count = 1
 
 #   FirstOfTheKingdom
 #        Description: grants a facility to complete the pandaria bands (need restart)
@@ -2739,6 +2752,497 @@ FirstOfTheKingdom.MogushanVaults = 1
 FirstOfTheKingdom.TerraceSpring = 1
 FirstOfTheKingdom.HeartOfFear = 1
 FirstOfTheKingdom.ThroneOfThunder = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# AUCTION HOUSE BOT SETTINGS
+#
+#    AuctionHouseBot.Account
+#       Description: Account ID for AHBot characters. If non-zero, all auctions and bids associated
+#                    with the AHBot will randomly be assigned one of this account's characters.
+#       Default:     0
+#
+
+AuctionHouseBot.Account = 0
+
+#
+#    AuctionHouseBot.Update.Interval
+#       Description: Interval in seconds for AHBot to get updated
+#       Default:     20
+#
+
+AuctionHouseBot.Update.Interval = 20
+
+#
+#    AuctionHouseBot.Seller.Enabled
+#       Description: General enable or disable AuctionHouseBot Seller functionality
+#       Default:     0 - (Disabled)
+#                    1 - (Enabled)
+
+AuctionHouseBot.Seller.Enabled = 0
+
+#
+#    AuctionHouseBot.Alliance.Items.Amount.Ratio
+#       Description: Enable/Disable (disabled if 0) the part of AHBot that puts items up for auction on Alliance AH
+#       Default:     100 - (Enabled with 100% of items specified in AuctionHouse.Items.Amount.color section)
+
+AuctionHouseBot.Alliance.Items.Amount.Ratio = 100
+
+#
+#    AuctionHouseBot.Horde.Items.Amount.Ratio
+#        Enable/Disable (disabled if 0) the part of AHBot that puts items up for auction on Horde AH
+#       Default: 100 (Enabled with 100% of items specified in AuctionHouse.Items.Amount.color section)
+
+AuctionHouseBot.Horde.Items.Amount.Ratio = 100
+
+#
+#    AuctionHouseBot.Neutral.Items.Amount.Ratio
+#       Description: Enable/Disable (disabled if 0) the part of AHBot that puts items up for auction on Neutral AH
+#       Default:     100 - (Enabled with 100% of items specified in AuctionHouse.Items.Amount.color section)
+
+AuctionHouseBot.Neutral.Items.Amount.Ratio = 100
+
+#
+#    AuctionHouseBot.MinTime
+#       Description: Minimum time for the new auction in hours
+#       Default: 1 - (Hour)
+
+AuctionHouseBot.MinTime = 1
+
+#
+#    AuctionHouseBot.MaxTime
+#       Description: Maximum time for the new auction in hours
+#       Default:     72 - (Hours)
+
+AuctionHouseBot.MaxTime = 72
+
+#
+#    AuctionHouseBot.Class.CLASS.Allow.Zero = 0
+#       Description: Include items without a sell or buy price.
+#       Default:     0 - (Disabled)
+#                    1 - (Enabled)
+
+AuctionHouseBot.Class.Consumable.Allow.Zero = 0
+AuctionHouseBot.Class.Container.Allow.Zero = 0
+AuctionHouseBot.Class.Weapon.Allow.Zero = 0
+AuctionHouseBot.Class.Gem.Allow.Zero = 0
+AuctionHouseBot.Class.Armor.Allow.Zero = 0
+AuctionHouseBot.Class.Reagent.Allow.Zero = 0
+AuctionHouseBot.Class.Projectile.Allow.Zero = 0
+AuctionHouseBot.Class.TradeGood.Allow.Zero = 0
+AuctionHouseBot.Class.Recipe.Allow.Zero = 0
+AuctionHouseBot.Class.Quiver.Allow.Zero = 0
+AuctionHouseBot.Class.Quest.Allow.Zero = 0
+AuctionHouseBot.Class.Key.Allow.Zero = 0
+AuctionHouseBot.Class.Misc.Allow.Zero = 0
+AuctionHouseBot.Class.Glyph.Allow.Zero = 0
+
+#
+#    AuctionHouseBot.Items.Vendor
+#       Description: Include items that can be bought from vendors.
+#       Default:     0 - (Disabled)
+#                    1 - (Enabled)
+
+AuctionHouseBot.Items.Vendor = 0
+
+#
+#    AuctionHouseBot.Items.Loot
+#       Description: Include items that can be looted or fished for.
+#       Default:     1 - (Enabled)
+#                    0 - (Disabled)
+
+AuctionHouseBot.Items.Loot = 1
+
+#
+#    AuctionHouseBot.Items.Misc
+#       Description: Include misc. items.
+#       Default:     0 - (Disabled)
+#                    1 - (Enabled)
+
+AuctionHouseBot.Items.Misc = 0
+
+#
+#    AuctionHouseBot.Bind.*
+#       Description: Indicates which bonding types to allow the bot to put up for auction
+#                       No     - Items that don't bind            Default 1 (Allowed)
+#                       Pickup - Items that bind on pickup        Default 0 (Not Allowed)
+#                       Equip  - Items that bind on equip         Default 1 (Allowed)
+#                       Use    - Items that bind on use           Default 1 (Allowed)
+#                       Quest  - Quest Items                      Default 0 (Not Allowed)
+#       Values:      0 - (Disabled)
+#                    1 - (Enabled)
+
+AuctionHouseBot.Bind.No = 1
+AuctionHouseBot.Bind.Pickup = 0
+AuctionHouseBot.Bind.Equip = 1
+AuctionHouseBot.Bind.Use = 1
+AuctionHouseBot.Bind.Quest = 0
+
+#
+#    AuctionHouseBot.LockBox.Enabled
+#       Description: Enable or not lockbox in auctionhouse
+#       Default      0 - (Disabled)
+#                    1 - (Enabled)
+
+AuctionHouseBot.LockBox.Enabled = 0
+
+#
+#    AuctionHouseBot.ItemsPerCycle.Boost
+#       Description: This value is used to fill AH faster than normal when there is more than this value on missed items (not auctioned items).
+#                    Usually this value is only used once on server start with empty auction table.
+#       Default:     1000
+
+AuctionHouseBot.ItemsPerCycle.Boost = 1000
+
+#
+#    AuctionHouseBot.ItemsPerCycle.Normal
+#       Description: This value is used to fill AH for sold and expired items. A high value will be more resource intensive
+#                    Usually this value is used always when auction table is already initialised.
+#       Default:     20
+
+AuctionHouseBot.ItemsPerCycle.Normal = 20
+
+#
+#    AuctionHouseBot.BuyPrice.Seller
+#       Description: Should the Seller use BuyPrice or SellPrice to determine Bid Prices
+#       Default:     1 - (use SellPrice)
+#                    0 - (use BuyPrice)
+
+AuctionHouseBot.BuyPrice.Seller = 1
+
+#
+#    AuctionHouseBot.BidPrice.*
+#       Description: These values determine the range that the Bid Price will fall into, as a percentage of the Buy Price
+#       Default:     0.6 - (Min)
+#                    0.9 - (Max)
+
+AuctionHouseBot.BidPrice.Min = 0.6
+AuctionHouseBot.BidPrice.Max = 0.9
+
+#
+#    AuctionHouseBot.Alliance.Price.Ratio
+#       Description: Percentage by which the price of items selled on Alliance Auction House is incremented / decreased
+#       Default:     100 - (Not modify)
+
+AuctionHouseBot.Alliance.Price.Ratio = 100
+
+#
+#    AuctionHouseBot.Horde.Price.Ratio
+#       Description: Percentage by which the price of items selled on Horde Auction House is incremented / decreased
+#       Default:     100 - (Not modify)
+
+AuctionHouseBot.Horde.Price.Ratio = 100
+
+#
+#    AuctionHouseBot.Neutral.Price.Ratio
+#       Description: Percentage by which the price of items selled on Neutral Auction House is incremented / decreased
+#       Default:     100 - (Not modify)
+
+AuctionHouseBot.Neutral.Price.Ratio = 100
+
+#
+#    AuctionHouseBot.Items.QUALITY.Price.Ratio
+#       Description: Percentage by which the price of items sold of each quality is incremented / decreased (for all houses)
+#       Default:     100 - (No change)
+
+AuctionHouseBot.Items.Gray.Price.Ratio = 100
+AuctionHouseBot.Items.White.Price.Ratio = 100
+AuctionHouseBot.Items.Green.Price.Ratio = 100
+AuctionHouseBot.Items.Blue.Price.Ratio = 100
+AuctionHouseBot.Items.Purple.Price.Ratio = 100
+AuctionHouseBot.Items.Orange.Price.Ratio = 100
+AuctionHouseBot.Items.Yellow.Price.Ratio = 100
+
+#
+#    AuctionHouseBot.Class.CLASS.Price.Ratio
+#       Description: Percentage by which the price of items sold of each class is incremented / decreased (for all houses)
+#       Default:   100 - (No change)
+
+AuctionHouseBot.Class.Consumable.Price.Ratio = 100
+AuctionHouseBot.Class.Container.Price.Ratio = 100
+AuctionHouseBot.Class.Weapon.Price.Ratio = 100
+AuctionHouseBot.Class.Gem.Price.Ratio = 100
+AuctionHouseBot.Class.Armor.Price.Ratio = 100
+AuctionHouseBot.Class.Reagent.Price.Ratio = 100
+AuctionHouseBot.Class.Projectile.Price.Ratio = 100
+AuctionHouseBot.Class.TradeGood.Price.Ratio = 100
+AuctionHouseBot.Class.Generic.Price.Ratio = 100
+AuctionHouseBot.Class.Recipe.Price.Ratio = 100
+AuctionHouseBot.Class.Quiver.Price.Ratio = 100
+AuctionHouseBot.Class.Quest.Price.Ratio = 100
+AuctionHouseBot.Class.Key.Price.Ratio = 100
+AuctionHouseBot.Class.Misc.Price.Ratio = 100
+AuctionHouseBot.Class.Glyph.Price.Ratio = 100
+
+#
+#    AuctionHouseBot.Items.ItemLevel.*
+#       Description: Prevent seller from listing items below/above this item level
+#       Default:     0 - (Disabled)
+
+AuctionHouseBot.Items.ItemLevel.Min = 0
+AuctionHouseBot.Items.ItemLevel.Max = 0
+
+#
+#    AuctionHouseBot.Items.ReqLevel.*
+#       Description: Prevent seller from listing items below/above this required level
+#       Default:     0 - (Disabled)
+
+AuctionHouseBot.Items.ReqLevel.Min = 0
+AuctionHouseBot.Items.ReqLevel.Max = 0
+
+#
+#    AuctionHouseBot.Items.ReqSkill.*
+#       Description: Prevent seller from listing items below/above this skill level
+#       Default:     0 - (Disabled)
+#                    1 - (Enabled)
+
+AuctionHouseBot.Items.ReqSkill.Min = 0
+AuctionHouseBot.Items.ReqSkill.Max = 0
+
+#
+#    AuctionHouseBot.Items.Amount.*
+#       Description: Define here for every item qualities how many items you want to be shown in Auction House
+#                    This value will be adjusted by AuctionHouseBot.FACTION.Items.Amount.Ratio to define the exact amount of
+#                    items that will finally be shown on Auction House
+#       Default:     0, 2000, 2500, 1500, 1000, 0, 0 (Gray, white, green, blue, purple, orange, yellow)
+
+AuctionHouseBot.Items.Amount.Gray = 0
+AuctionHouseBot.Items.Amount.White = 2000
+AuctionHouseBot.Items.Amount.Green = 2500
+AuctionHouseBot.Items.Amount.Blue = 1500
+AuctionHouseBot.Items.Amount.Purple = 1000
+AuctionHouseBot.Items.Amount.Orange = 0
+AuctionHouseBot.Items.Amount.Yellow = 0
+
+#
+#    AuctionHouseBot.Class.*
+#       Description: Here you can set the class of items you prefer to be show on AH
+#                    These value are sorted by preference, from 0 (disabled) to 10 (max. preference)
+#       Default:     Consumable: 6
+#                    Container: 4
+#                    Weapon: 8
+#                    Gem: 3
+#                    Armor: 8
+#                    Reagent: 1
+#                    Projectile: 2
+#                    TradeGod: 10
+#                    Generic: 1
+#                    Recipe: 6
+#                    Quiver: 1
+#                    Quest: 1
+#                    Key: 1
+#                    Misc: 5
+#                    Glyph: 3
+
+AuctionHouseBot.Class.Consumable = 6
+AuctionHouseBot.Class.Container = 4
+AuctionHouseBot.Class.Weapon = 8
+AuctionHouseBot.Class.Gem = 3
+AuctionHouseBot.Class.Armor = 8
+AuctionHouseBot.Class.Reagent = 1
+AuctionHouseBot.Class.Projectile = 2
+AuctionHouseBot.Class.TradeGood = 10
+AuctionHouseBot.Class.Generic = 1
+AuctionHouseBot.Class.Recipe = 6
+AuctionHouseBot.Class.Quiver = 1
+AuctionHouseBot.Class.Quest = 1
+AuctionHouseBot.Class.Key = 1
+AuctionHouseBot.Class.Misc = 5
+AuctionHouseBot.Class.Glyph = 3
+
+#
+###################################################################################################
+
+###################################################################################################
+# AUCTION HOUSE BOT ITEM FINE TUNING
+#
+#    The following are usefull for limiting what character levels can
+#    benefit from the auction house
+#
+#    AuctionHouseBot.Class.Misc.Mount.ReqLevel.*
+#       Description: Prevent seller from listing mounts below/above this required level
+#       Default:     0
+
+AuctionHouseBot.Class.Misc.Mount.ReqLevel.Min = 0
+AuctionHouseBot.Class.Misc.Mount.ReqLevel.Max = 0
+
+#
+#    AuctionHouseBot.Class.Misc.Mount.ReqSkill.*
+#       Description: Prevent seller from listing mounts below/above this skill level
+#       Default:     0
+
+AuctionHouseBot.Class.Misc.Mount.ReqSkill.Min = 0
+AuctionHouseBot.Class.Misc.Mount.ReqSkill.Max = 0
+
+#
+#    AuctionHouseBot.Class.Glyph.ReqLevel.*
+#       Description: Prevent seller from listing glyphs below/above this required level
+#       Default:     0
+
+AuctionHouseBot.Class.Glyph.ReqLevel.Min = 0
+AuctionHouseBot.Class.Glyph.ReqLevel.Max = 0
+
+#
+#    AuctionHouseBot.Class.Glyph.ItemLevel.*
+#       Description: Prevent seller from listing glyphs below/above this item level
+#       Default:     0
+
+AuctionHouseBot.Class.Glyph.ItemLevel.Min = 0
+AuctionHouseBot.Class.Glyph.ItemLevel.Max = 0
+
+#
+#    AuctionHouseBot.Class.TradeGood.ItemLevel.*
+#       Description: Prevent seller from listing trade good items below/above this item level
+#       Default:     0
+
+AuctionHouseBot.Class.TradeGood.ItemLevel.Min = 0
+AuctionHouseBot.Class.TradeGood.ItemLevel.Max = 0
+
+#
+#    AuctionHouseBot.Class.Container.ItemLevel.*
+#       Description: Prevent seller from listing contianers below/above this item level
+#       Default:     0
+
+AuctionHouseBot.Class.Container.ItemLevel.Min = 0
+AuctionHouseBot.Class.Container.ItemLevel.Max = 0
+
+#
+#    AuctionHouseBot.forceIncludeItems
+#       Description: Include these items and ignore ALL filters
+#                    List of ids with delimiter ','
+#       Default:     ""
+
+AuctionHouseBot.forceIncludeItems = ""
+
+#
+#    AuctionHouseBot.forceExcludeItems
+#       Description: Exclude these items even if they would pass the filters
+#                    List of ids with delimiter ','
+#       Example:     "21878,27774,27811,28117,28122,43949" (this removes old items)
+#       Default:     ""
+#
+
+AuctionHouseBot.forceExcludeItems = "6343,6345,6376"
+
+#
+#    AuctionHouseBot.Class.RandomStackRatio.*
+#       Description: Used to determine how often a stack of the class will be single or randomly-size stacked when posted
+#                    Value needs to be between 0 and 100, no decimal.  Anything higher than 100 will be treated as 100
+#       Examples:    100 = stacks will always be random in size
+#                    50 = half the time the stacks are random, the other half being single stack
+#                    0 = stacks will always single size
+#       Default:     Consumable: 20 (20% random stack size, 80% single stack size)
+#                    Container: 0 (100% single stack size)
+#                    Weapon: 0 (100% single stack size)
+#                    Gem: 20 (20% random stack size, 80% single stack size)
+#                    Armor: 0 (100% single stack size)
+#                    Reagent: 100 (100% random stack size)
+#                    Projectile: 100 (100% random stack size)
+#                    TradeGood: 50 (50% random stack size, 50% single stack size)
+#                    Generic: 100 (100% random stack size)
+#                    Recipe: 0 (100% single stack size)
+#                    Quiver: 0 (100% single stack size)
+#                    Quest: 100 (100% random stack size)
+#                    Key: 100 (100% random stack size)
+#                    Misc: 100 (100% random stack size)
+#                    Glyph: 0 (100% single stack size)
+#
+
+AuctionHouseBot.Class.RandomStackRatio.Consumable = 20
+AuctionHouseBot.Class.RandomStackRatio.Container = 0
+AuctionHouseBot.Class.RandomStackRatio.Weapon = 0
+AuctionHouseBot.Class.RandomStackRatio.Gem = 20
+AuctionHouseBot.Class.RandomStackRatio.Armor = 0
+AuctionHouseBot.Class.RandomStackRatio.Reagent = 100
+AuctionHouseBot.Class.RandomStackRatio.Projectile = 100
+AuctionHouseBot.Class.RandomStackRatio.TradeGood = 50
+AuctionHouseBot.Class.RandomStackRatio.Generic = 100
+AuctionHouseBot.Class.RandomStackRatio.Recipe = 0
+AuctionHouseBot.Class.RandomStackRatio.Quiver = 0
+AuctionHouseBot.Class.RandomStackRatio.Quest = 100
+AuctionHouseBot.Class.RandomStackRatio.Key = 100
+AuctionHouseBot.Class.RandomStackRatio.Misc = 100
+AuctionHouseBot.Class.RandomStackRatio.Glyph = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# AUCTION HOUSE BOT BUYER CONFIG
+#
+#    AuctionHouseBot.Buyer.Enabled
+#       Description: General enable or disable AuctionHouseBot Buyer functionality
+#       Default:     0 - (Disabled)
+#                    1 - (Enabled)
+
+AuctionHouseBot.Buyer.Enabled = 0
+
+#
+#    AuctionHouseBot.Buyer.FACTION.Enabled
+#       Description: Enable or disable buyer independently by faction
+#       Default:     0 - (Disabled)
+#                    1 - (Enabled)
+
+AuctionHouseBot.Buyer.Alliance.Enabled = 0
+AuctionHouseBot.Buyer.Horde.Enabled = 0
+AuctionHouseBot.Buyer.Neutral.Enabled = 0
+
+#    AuctionHouseBot.Buyer.ChanceFactor
+#       Description: k value in the formula used for the chance to buy an item "100^(1 + (1 - (AuctionBid / ItemPrice)) / k)"
+#                    It must be a decimal number in the range of (0, +infinity). The higher the number the higher chance to buy overpriced auctions
+#       Default:     2
+
+AuctionHouseBot.Buyer.ChanceFactor = 2
+
+#
+#    AuctionHouseBot.Buyer.Baseprice.QUALITY
+#       Description: Base sellprices in copper for non priced items for each quality.
+#                    The default values are based on average item prices of each quality.
+#       Defaults:    Gray   3504
+#                    White  5429
+#                    Green  21752
+#                    Blue   36463
+#                    Purple 87124
+#                    Orange 214347
+#                    Yellow 407406
+
+AuctionHouseBot.Buyer.Baseprice.Gray = 3504
+AuctionHouseBot.Buyer.Baseprice.White = 5429
+AuctionHouseBot.Buyer.Baseprice.Green = 21752
+AuctionHouseBot.Buyer.Baseprice.Blue = 36463
+AuctionHouseBot.Buyer.Baseprice.Purple = 87124
+AuctionHouseBot.Buyer.Baseprice.Orange = 214347
+AuctionHouseBot.Buyer.Baseprice.Yellow = 407406
+
+#
+#    AuctionHouseBot.Buyer.ChanceMultiplier.QUALITY
+#       Description: Multipliers for the buy/bid chances for each quality. 100 means the chance is 100% of the original,
+#                    1 would mean 1 % of the original and 200 would mean 200% of the original chance.
+#       Defaults:    Gray   100
+#                    White  100
+#                    Green  100
+#                    Blue   100
+#                    Purple 100
+#                    Orange 100
+#                    Yellow 100
+
+AuctionHouseBot.Buyer.ChanceMultiplier.Gray = 100
+AuctionHouseBot.Buyer.ChanceMultiplier.White = 100
+AuctionHouseBot.Buyer.ChanceMultiplier.Green = 100
+AuctionHouseBot.Buyer.ChanceMultiplier.Blue = 100
+AuctionHouseBot.Buyer.ChanceMultiplier.Purple = 100
+AuctionHouseBot.Buyer.ChanceMultiplier.Orange = 100
+AuctionHouseBot.Buyer.ChanceMultiplier.Yellow = 100
+
+#
+#    AuctionHouseBot.Buyer.Recheck.Interval
+#       Description: This specifies the time interval (in minutes) between two evaluations of the same sold item.
+#                    The smaller this value is, the more chances you give for an item to be bought by ahbot.
+#       Default:     20 (20min.)
+
+AuctionHouseBot.Buyer.Recheck.Interval = 20
 
 #
 ###################################################################################################
@@ -3386,319 +3890,6 @@ Transmogrification.SetCopperCost = 0
 
 #
 ###################################################################################################
-
-###################################################################################################
-# SOLOCRAFT
-
-Solocraft.Enable = 1
-Solocraft.Announce = 1
-
-SoloCraft.Debuff.Enable = 1
-SoloCraft.Spellpower.Mult = 2.5
-SoloCraft.Stats.Mult = 100.0
-
-SoloCraft.Death.Knight = 100
-SoloCraft.Druid = 100
-SoloCraft.Hunter = 100
-SoloCraft.Mage = 100
-SoloCraft.Paladin = 100
-SoloCraft.Priest = 100
-SoloCraft.Rogue = 100
-SoloCraft.Shaman = 100
-SoloCraft.Warlock = 100
-SoloCraft.Warrior = 100
-SoloCraft.Monk = 100
-
-Solocraft.XP.Enabled = 1
-Solocraft.XP.Balancing.Enabled = 1
-
-Solocraft.Dungeon = 5.0
-Solocraft.Heroic = 10.0
-Solocraft.Raid25 = 25.0
-Solocraft.Raid40 = 40.0
-
-Solocraft.Max.Level.Diff = 10
-Solocraft.Dungeon.Level = 90
-
-Solocraft.Stockades.Level = 22
-Solocraft.WailingCaverns.Level = 17
-Solocraft.RazorfenKraul.Level = 30
-Solocraft.BlackfathomDeeps.Level = 20
-Solocraft.Uldaman.Level = 40
-Solocraft.Gnomeregan.Level = 24
-Solocraft.SunkenTemple.Level = 50
-Solocraft.RazorfenDowns.Level = 40
-Solocraft.ZulFarrak.Level = 44
-Solocraft.BlackRockSpire.Level = 55
-Solocraft.BlackrockDepths.Level = 50
-Solocraft.OnyxiaLair.Level = 60
-Solocraft.Stratholme.Level = 55
-Solocraft.Mauradon.Level = 48
-Solocraft.RagefireChasm.Level = 15
-Solocraft.MoltenCore.Level = 60
-Solocraft.DireMaul.Level = 48
-Solocraft.BlackwingLair.Level = 40
-Solocraft.RuinsOfAhnQiraj.Level = 60
-Solocraft.TempleOfAhnQiraj.Level = 60
-Solocraft.TheBlackMorass.Level = 68
-Solocraft.Karazahn.Level = 68
-Solocraft.TheBattleForMountHyjal.Level = 70
-Solocraft.TheShatteredHalls.Level = 68
-Solocraft.TheBloodFurnace.Level = 68
-Solocraft.HellfireRampart.Level = 68
-Solocraft.MagtheridonsLair.Level = 68
-Solocraft.TheSteamVault.Level = 68
-Solocraft.TheUnderbog.Level = 68
-Solocraft.TheSlavePens.Level = 68
-Solocraft.SerpentshrineCavern.Level = 70
-Solocraft.TheEye.Level = 70
-Solocraft.TheArcatraz.Level = 68
-Solocraft.TheBotanica.Level = 68
-Solocraft.TheMechanar.Level = 68
-Solocraft.ShadowLabyrinth.Level = 68
-Solocraft.SethekkHalls.Level = 68
-Solocraft.ManaTombs.Level = 68
-Solocraft.AuchenaiCrypts.Level = 68
-Solocraft.OldHillsbradFoothills.Level = 68
-Solocraft.BlackTemple.Level = 70
-Solocraft.GruulsLair.Level = 70
-Solocraft.SunwellPlateau.Level = 70
-Solocraft.MagistersTerrace.Level = 68
-Solocraft.Naxxramas.Level = 78
-Solocraft.UtgardeKeep = 78
-Solocraft.UtgardePinnacle.Level = 78
-Solocraft.Oculus.Level = 78
-Solocraft.TheCullingOfStratholme.Level = 78
-Solocraft.HallsOfStone.Level = 78
-Solocraft.DrakTharonKeep.Level = 78
-Solocraft.AzjolNerub.Level = 78
-Solocraft.HallsOfLighting.Level = 78
-Solocraft.Ulduar.Level = 80
-Solocraft.GunDrak.Level = 78
-Solocraft.VioletHold.Level = 78
-Solocraft.TheObsidianSanctum.Level = 80
-Solocraft.TheEyeOfEternity.Level = 80
-Solocraft.AhnkahetTheOldKingdom.Level = 78
-Solocraft.IcecrownCitadel.Level = 80
-Solocraft.TheForgeOfSouls.Level = 78
-Solocraft.TrialOfTheCrusader.Level = 80
-Solocraft.TrialOfTheChampion.Level = 80
-Solocraft.PitOfSaron.Level = 78
-Solocraft.HallsOfReflection.Level = 78
-Solocraft.TheRubySanctum.Level = 80
-Solocraft.ShadowfangKeep.Level = 85
-Solocraft.DeadMines.Level = 85
-Solocraft.BlackrockCaverns.Level = 85
-Solocraft.ThroneOfTheTides.Level = 85
-Solocraft.TheVortexPinnacle.Level = 85
-Solocraft.TheStonecore.Level = 85
-Solocraft.LostCityOfTheTol'vir.Level = 85
-Solocraft.HallsOfOrigination.Level = 85
-Solocraft.GrimBatol.Level = 85
-Solocraft.BlackwingDescent.Level = 85
-Solocraft.TheBastionOfTwilight.Level = 85
-Solocraft.ThroneOfTheFourWinds.Level = 85
-Solocraft.BaradinHold.Level = 85
-Solocraft.Firelands.Level = 85
-Solocraft.DragonSoul.Level = 85
-Solocraft.EndTime.Level = 85
-Solocraft.WellOfEternity.Level = 85
-Solocraft.HourOfTwilight.Level = 85
-Solocraft.Zul'gurub.Level = 85
-Solocraft.ZulAman.Level = 85
-Solocraft.Nexus.Level = 85
-Solocraft.ShadoPanMonastery.Level = 90
-Solocraft.Scholomance.Level = 90
-Solocraft.ScarletMonastery.Level = 90
-Solocraft.Mogu'shanPalace.Level = 90
-Solocraft.Mogu'shanVaults.Level = 90
-Solocraft.SiegeOfOrgrimmar.Level = 90
-Solocraft.ThroneOfThunder.Level = 90
-Solocraft.HeartOfFear.Level = 90
-Solocraft.TerraceOfEndlessSpring.Level = 90
-Solocraft.ScarletHalls.Level = 90
-Solocraft.GateOfTheSettingSun.Level = 90
-Solocraft.SiegeOfNiuzaoTemple.Level = 90
-Solocraft.TempleOfTheJadeSerpent.Level = 90
-Solocraft.StormstoutBrewery.Level = 90
-
-Solocraft.Stockades = 5.0
-Solocraft.WailingCaverns = 5.0
-Solocraft.RazorfenKraul = 5.0
-Solocraft.BlackfathomDeeps = 5.0
-Solocraft.Uldaman = 5.0
-Solocraft.Gnomeregan = 5.0
-Solocraft.SunkenTemple = 5.0
-Solocraft.RazorfenDowns = 5.0
-Solocraft.ZulFarrak = 5.0
-Solocraft.BlackRockSpire = 10.0
-Solocraft.BlackrockDepths = 5.0
-Solocraft.OnyxiaLair = 40.0
-Solocraft.Stratholme = 5.0
-Solocraft.Mauradon = 5.0
-Solocraft.RagefireChasm = 5.0
-Solocraft.MoltenCore = 40.0
-Solocraft.DireMaul = 5.0
-Solocraft.BlackwingLair = 40.0
-Solocraft.RuinsOfAhnQiraj = 20.0
-Solocraft.TempleOfAhnQiraj = 40.0
-Solocraft.TheBlackMorass = 5.0
-Solocraft.Karazahn = 10.0
-Solocraft.TheBattleForMountHyjal = 25.0
-Solocraft.TheShatteredHalls = 5.0
-Solocraft.TheBloodFurnace = 5.0
-Solocraft.HellfireRampart = 5.0
-Solocraft.MagtheridonsLair = 25.0
-Solocraft.TheSteamVault = 5.0
-Solocraft.TheUnderbog = 5.0
-Solocraft.TheSlavePens = 5.0
-Solocraft.SerpentshrineCavern = 25.0
-Solocraft.TheEye = 25.0
-Solocraft.TheArcatraz = 5.0
-Solocraft.TheBotanica = 5.0
-Solocraft.TheMechanar = 5.0
-Solocraft.ShadowLabyrinth = 5.0
-Solocraft.SethekkHalls = 5.0
-Solocraft.ManaTombs = 5.0
-Solocraft.AuchenaiCrypts = 5.0
-Solocraft.OldHillsbradFoothills = 5.0
-Solocraft.BlackTemple = 25.0
-Solocraft.GruulsLair = 25.0
-Solocraft.SunwellPlateau = 25.0
-Solocraft.MagistersTerrace = 5.0
-Solocraft.Naxxramas = 10.0
-Solocraft.UtgardeKeep = 5.0
-Solocraft.UtgardePinnacle = 5.0
-Solocraft.Oculus = 5.0
-Solocraft.TheCullingOfStratholme = 5.0
-Solocraft.HallsOfStone = 5.0
-Solocraft.DrakTharonKeep = 5.0
-Solocraft.AzjolNerub = 5.0
-Solocraft.HallsOfLighting = 5.0
-Solocraft.Ulduar = 10.0
-Solocraft.GunDrak = 5.0
-Solocraft.VioletHold = 5.0
-Solocraft.TheObsidianSanctum = 10.0
-Solocraft.TheEyeOfEternity = 10.0
-Solocraft.AhnkahetTheOldKingdom = 5.0
-Solocraft.IcecrownCitadel = 10.0
-Solocraft.TheForgeOfSouls = 5.0
-Solocraft.TrialOfTheCrusader = 10.0
-Solocraft.TrialOfTheChampion = 5.0
-Solocraft.PitOfSaron = 5.0
-Solocraft.HallsOfReflection = 5.0
-Solocraft.TheRubySanctum = 10.0
-Solocraft.ShadowfangKeep = 5.0
-Solocraft.DeadMines = 5.0
-Solocraft.BlackrockCaverns = 5.0
-Solocraft.ThroneOfTheTides = 5.0
-Solocraft.TheVortexPinnacle = 5.0
-Solocraft.TheStonecore = 5.0
-Solocraft.LostCityOfTheTol'vir = 5.0
-Solocraft.HallsOfOrigination = 5.0
-Solocraft.GrimBatol = 5.0
-Solocraft.BlackwingDescent = 10.0
-Solocraft.TheBastionOfTwilight = 10.0
-Solocraft.ThroneOfTheFourWinds = 10.0
-Solocraft.BaradinHold = 10.0
-Solocraft.Firelands = 10.0
-Solocraft.DragonSoul = 10.0
-Solocraft.Zul'gurub = 5.0
-Solocraft.ZulAman = 5.0
-Solocraft.Nexus = 5.0
-Solocraft.ShadoPanMonastery = 5.0
-Solocraft.Scholomance = 5.0
-Solocraft.ScarletMonastery = 5.0
-Solocraft.Mogu'shanPalace = 5.0
-Solocraft.Mogu'shanVaults = 10.0
-Solocraft.SiegeOfOrgrimmar = 10.0
-Solocraft.ThroneOfThunder = 10.0
-Solocraft.HeartOfFear = 10.0
-Solocraft.TerraceOfEndlessSpring = 10.0
-Solocraft.ScarletHalls = 5.0
-Solocraft.GateOfTheSettingSun = 5.0
-Solocraft.SiegeOfNiuzaoTemple = 5.0
-Solocraft.TempleOfTheJadeSerpent = 5.0
-Solocraft.StormstoutBrewery = 5.0
-
-Solocraft.TheBlackMorassH = 5.0
-Solocraft.TheShatteredHallsH = 5.0
-Solocraft.TheBloodFurnaceH = 5.0
-Solocraft.HellfireRampartH = 5.0
-Solocraft.TheSteamVaultH = 5.0
-Solocraft.TheUnderbogH = 5.0
-Solocraft.TheSlavePensH = 5.0
-Solocraft.TheArcatrazH = 5.0
-Solocraft.TheBotanicaH = 5.0
-Solocraft.TheMechanarH = 5.0
-Solocraft.ShadowLabyrinthH = 5.0
-Solocraft.SethekkHallsH = 5.0
-Solocraft.ManaTombsH = 5.0
-Solocraft.AuchenaiCryptsH = 5.0
-Solocraft.OldHillsbradFoothillsH = 5.0
-Solocraft.MagistersTerraceH = 5.0
-Solocraft.NaxxramasH = 25.0
-Solocraft.UtgardeKeepH = 5.0
-Solocraft.UtgardePinnacleH = 5.0
-Solocraft.OculusH = 5.0
-Solocraft.TheCullingOfStratholmeH = 5.0
-Solocraft.HallsOfStoneH = 5.0
-Solocraft.DrakTharonKeepH = 5.0
-Solocraft.AzjolNerubH = 5.0
-Solocraft.HallsOfLightingH = 5.0
-Solocraft.UlduarH = 25.0
-Solocraft.GunDrakH = 5.0
-Solocraft.VioletHoldH = 5.0
-Solocraft.TheObsidianSanctumH = 25.0
-Solocraft.TheEyeOfEternityH = 25.0
-Solocraft.AhnkahetTheOldKingdomH = 5.0
-Solocraft.IcecrownCitadelH = 25.0
-Solocraft.TheForgeOfSoulsH = 5.0
-Solocraft.TrialOfTheCrusaderH = 25.0
-Solocraft.TrialOfTheChampionH = 5.0
-Solocraft.PitOfSaronH = 5.0
-Solocraft.HallsOfReflectionH = 5.0
-Solocraft.TheRubySanctumH = 25.0
-Solocraft.ShadowfangKeepH = 5.0
-Solocraft.DeadMinesH = 5.0
-Solocraft.BlackrockCavernsH = 5.0
-Solocraft.ThroneOfTheTidesH = 5.0
-Solocraft.TheVortexPinnacleH = 5.0
-Solocraft.TheStonecoreH = 5.0
-Solocraft.LostCityOfTheTol'virH = 5.0
-Solocraft.HallsOfOriginationH = 5.0
-Solocraft.GrimBatolH = 5.0
-Solocraft.BlackwingDescentH = 25.0
-Solocraft.TheBastionOfTwilightH = 25.0
-Solocraft.ThroneOfTheFourWindsH = 25.0
-Solocraft.BaradinHoldH = 25.0
-Solocraft.FirelandsH = 25.0
-Solocraft.DragonSoulH = 25.0
-Solocraft.EndTimeH = 5.0
-Solocraft.WellOfEternityH = 5.0
-Solocraft.HourOfTwilightH = 5.0
-Solocraft.Zul'gurubH = 5.0
-Solocraft.ZulAmanH = 5.0
-Solocraft.NexusH = 5.0
-Solocraft.ShadoPanMonasteryH = 5.0
-Solocraft.ScholomanceH = 5.0
-Solocraft.ScarletMonasteryH = 5.0
-Solocraft.Mogu'shanPalaceH = 5.0
-Solocraft.Mogu'shanVaultsH = 25.0
-Solocraft.SiegeOfOrgrimmarH = 25.0
-Solocraft.ThroneOfThunderH = 25.0
-Solocraft.HeartOfFearH = 25.0
-Solocraft.TerraceOfEndlessSpringH = 25.0
-Solocraft.ScarletHallsH = 5.0
-Solocraft.GateOfTheSettingSunH = 5.0
-Solocraft.SiegeOfNiuzaoTempleH = 5.0
-Solocraft.TempleOfTheJadeSerpentH = 5.0
-Solocraft.StormstoutBreweryH = 5.0
-Solocraft.ArgentTournamentRaidH10 = 10.0
-Solocraft.ArgentTournamentRaidH25 = 25.0
-
-#
-################################################################################################
 
 ###################################################################################################
 # DAMAGE CONFIG BALANCE SYSTEM

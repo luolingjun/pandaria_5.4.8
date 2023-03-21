@@ -52,6 +52,7 @@ void AddSC_Anticheat();
 void AddSC_account_commandscript();
 void AddSC_achievement_commandscript();
 void AddSC_anticheat_commandscript();
+void AddSC_ahbot_commandscript();
 void AddSC_ban_commandscript();
 void AddSC_battlenet_account_commandscript();
 void AddSC_bf_commandscript();
@@ -91,7 +92,6 @@ void AddSC_ticket_commandscript();
 void AddSC_titles_commandscript();
 void AddSC_warden_commandscript();
 void AddSC_wp_commandscript();
-void AddSC_mmaps_commandscript();
 
 // Battlegrounds
 void AddSC_alterac_valley();
@@ -1094,6 +1094,7 @@ void AddCommandScripts()
     AddSC_account_commandscript();
     AddSC_achievement_commandscript();
     AddSC_anticheat_commandscript();
+    AddSC_ahbot_commandscript();
     AddSC_ban_commandscript();
     AddSC_battlenet_account_commandscript();
     AddSC_bf_commandscript();
@@ -1131,7 +1132,6 @@ void AddCommandScripts()
     AddSC_titles_commandscript();
     AddSC_warden_commandscript();
     AddSC_wp_commandscript();
-    AddSC_mmaps_commandscript();
 }
 
 void AddWorldScripts()
@@ -2133,22 +2133,16 @@ void AddBattlegroundScripts()
 
 #endif
 void AddSC_npc_teleport();
-void AddSC_wow_token();
 void AddSC_custom_reward();
-void AddSC_boost_profession();
-void AddSC_custom_items();
-void AddSC_solocraft_system();
+void AddSC_battle_pay_items();
 
 void AddCustomScripts()
 {
 #ifdef SCRIPTS
     /* This is where custom scripts should be added. */
 AddSC_npc_teleport();
-AddSC_wow_token();
 AddSC_custom_reward();
-AddSC_boost_profession();
-AddSC_custom_items();
-AddSC_solocraft_system();
+AddSC_battle_pay_items();
 
 #endif
     AddSC_Anticheat();
