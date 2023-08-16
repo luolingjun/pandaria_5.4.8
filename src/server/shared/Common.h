@@ -119,7 +119,7 @@
 #define I32FMT "%08I32X"
 #define I64FMT "%016I64X"
 #define atoll _atoi64
-#define vsnprintf _vsnprintf
+//#define vsnprintf _vsnprintf   //fix for vs2022,boost 1.78
 #define finite(X) _finite(X)
 #define llabs _abs64
 
